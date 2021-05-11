@@ -38,10 +38,22 @@ Build using these steps (NOTE 1: building might take **close to an hour**! NOTE 
 ```sh
 $ cd <some directory where you'll keep the compiler binaries and its sources; you'll need to keep the whole GIT repo, because xargo/cargo need those when building your ESP32 crates>
 $ git clone https://github.com/ivmarkov/rust
-$ git checkout stable
 $ cd rust
+$ git checkout stable
 $ ./configure --experimental-targets=Xtensa
 $ ./x.py build --stage 2
+```
+
+### Fix toolchain vendor/ directory, so that building STD with Cargo does work
+
+(Assuming you are still in the rust/ directory):
+
+```sh
+$ mkdir vendor
+$ cd vendor
+$ ln -s ../library/rustc-std-workspace-alloc/ rustc-std-workspace-alloc
+$ ln -s ../library/rustc-std-workspace-core/ rustc-std-workspace-core
+$ ln -s ../library/rustc-std-workspace-std/ rustc-std-workspace-std
 ```
 
 Make Rustup aware of the newly built compiler:
@@ -71,7 +83,7 @@ xtensa-none-elf
 
 ### Optional steps
 
-Install xargo (optional because `cargo build -Z build-std=std,panic_abort -Z build-std-features=panic_immediate_abort` seems to work again):
+Install xargo (optional because `cargo build -Z build-std=std,panic_abort -Z build-std-features=panic_immediate_abort` seems to work again, given that the 'Fix toolchain vendor/ directory' step from above is performed):
 
 ```sh
 $ cargo install xargo
