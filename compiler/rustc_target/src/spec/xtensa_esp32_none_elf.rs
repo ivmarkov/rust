@@ -7,13 +7,14 @@ pub fn target() -> Target {
         pointer_width: 32,
         data_layout: "e-m:e-p:32:32-i8:8:32-i16:16:32-i64:64-n32".to_string(),
         arch: "xtensa".to_string(),
-        
+
         options: TargetOptions {
             endian: Endian::Little,
             c_int_width: "32".to_string(),
+            os_family: Some("unix".to_string()),
             os: "none".to_string(),
-            env: String::new(),
-            vendor: String::new(),
+            env: "newlib".to_string(),
+            vendor: "espressif".to_string(),
             linker_flavor: LinkerFlavor::Gcc,
 
             executables: true,
