@@ -85,6 +85,12 @@ cfg_if::cfg_if! {
         unsafe fn aligned_malloc(layout: &Layout) -> *mut u8 {
             libc::aligned_alloc(layout.align(), layout.size()) as *mut u8
         }
+    } else if #[cfg(all(target_os = "none", target_vendor = "espressif"))] {
+        #[inline]
+        unsafe fn aligned_malloc(layout: &Layout) -> *mut u8 {
+            // TODO: This is very likely NOT OK
+            libc::malloc(layout.size()) as *mut u8
+        }
     } else {
         #[inline]
         unsafe fn aligned_malloc(layout: &Layout) -> *mut u8 {

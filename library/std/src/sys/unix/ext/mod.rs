@@ -56,6 +56,8 @@ cfg_if::cfg_if! {
         use crate::os::macos as platform;
         #[cfg(target_os = "netbsd")]
         use crate::os::netbsd as platform;
+        #[cfg(all(target_os = "none", target_env = "newlib", target_vendor = "espressif"))]
+        use crate::os::none as platform;
         #[cfg(target_os = "openbsd")]
         use crate::os::openbsd as platform;
         #[cfg(target_os = "redox")]

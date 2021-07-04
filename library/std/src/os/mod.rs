@@ -68,6 +68,8 @@ pub mod ios;
 pub mod macos;
 #[cfg(target_os = "netbsd")]
 pub mod netbsd;
+#[cfg(all(target_os = "none", target_env = "newlib", target_vendor = "espressif"))]
+pub mod none;
 #[cfg(target_os = "openbsd")]
 pub mod openbsd;
 #[cfg(target_os = "redox")]
