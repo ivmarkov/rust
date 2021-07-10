@@ -28,13 +28,11 @@ pub fn target() -> Target {
             // this change and claim that atomics are supported "in hardware" (even though they would be emulated
             // by actually trapping the illegal instruction exception handler and calling into an ESP-IDF C emulation code).
             //
-            // However, for now we just expose the reality and hope to provide atomics support with polyfills like
-            // https://github.com/embassy-rs/atomic-polyfill
-            //
-            // The trick with supporting atomics by emulating the missing instruction might anyway be best supported
-            // with a separate, dedicated target.
-            max_atomic_width: Some(0),
-            atomic_cas: false,
+            // However, for now we simultaneously claim "max_atomic_width: Some(32)" **and** atomic_cas: true,
+            // which should force  the compiler to generate libcalls to functions that emulate atomics
+            // and which are already implemented in the ESP-IDF main branch anyway.
+            max_atomic_width: Some(32),
+            atomic_cas: true,
 
             // Because these devices have very little resources having an
             // unwinder is too onerous so we default to "abort" because the
