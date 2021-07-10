@@ -90,12 +90,6 @@ cfg_if::cfg_if! {
         unsafe fn aligned_malloc(layout: &Layout) -> *mut u8 {
             // Strangely, libc::aligned_alloc is not available under newlib
             // TODO: Check if this is an ommission and if so, file an MR against the libc crate
-            heap_caps_aligned_alloc(
-                layout.align() as u32,
-                layout.size() as u32,
-                4/*MALLOC_CAP_8BIT*/,
-            )
-
             extern "C" {
                 fn heap_caps_aligned_alloc(
                     alignment: u32,
@@ -103,6 +97,12 @@ cfg_if::cfg_if! {
                     caps: u32,
                 ) -> *mut u8;
             }
+
+            heap_caps_aligned_alloc(
+                layout.align() as u32,
+                layout.size() as u32,
+                4/*MALLOC_CAP_8BIT*/,
+            )
         }
     } else {
         #[inline]
